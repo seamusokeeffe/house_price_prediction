@@ -1,0 +1,40 @@
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local environments
+venv/
+env/
+.env
+.env.*
+!.env.example
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local data snapshots and generated datasets
+data/raw/
+data/interim/
+data/processed/
+
+# Generated artifacts
+artifacts/
+*.pkl
+*.joblib
+*.duckdb
+*.parquet
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
