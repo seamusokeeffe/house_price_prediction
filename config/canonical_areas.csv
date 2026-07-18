@@ -1,0 +1,59 @@
+canonical_area,alias,scope,match_type,match_priority,notes
+Sandymount,Sandymount,inference,controlled_phrase,50,locked canonical name
+Ballsbridge,Ballsbridge,inference,controlled_phrase,50,locked canonical name
+Ranelagh,Ranelagh,inference,controlled_phrase,50,locked canonical name
+Rathmines,Rathmines,inference,controlled_phrase,50,locked canonical name
+Rathgar,Rathgar,inference,controlled_phrase,50,locked canonical name
+Terenure,Terenure,inference,controlled_phrase,50,locked canonical name
+Donnybrook,Donnybrook,inference,controlled_phrase,50,locked canonical name
+Milltown,Milltown,inference,controlled_phrase,50,locked canonical name; non-unique locality guarded by Dublin context
+Dartry,Dartry,inference,controlled_phrase,50,locked canonical name
+Clonskeagh,Clonskeagh,inference,controlled_phrase,50,locked canonical name
+Windy Arbour,Windy Arbour,inference,controlled_phrase,50,locked canonical name
+Windy Arbour,Windy-Arbour,inference,controlled_phrase,50,safe dash spacing variant
+Churchtown,Churchtown,inference,controlled_phrase,50,locked canonical name; non-unique locality guarded by Dublin context
+Dundrum,Dundrum,inference,controlled_phrase,50,locked canonical name
+Goatstown,Goatstown,inference,controlled_phrase,50,locked canonical name
+Foxrock,Foxrock,inference,controlled_phrase,50,locked canonical name
+Seapoint,Seapoint,inference,controlled_phrase,50,locked canonical name
+Blackrock,Blackrock,inference,controlled_phrase,50,locked canonical name; non-unique locality guarded by Dublin context
+Booterstown,Booterstown,inference,controlled_phrase,50,locked canonical name
+Merrion,Merrion,inference,controlled_phrase,80,locked canonical name; lower priority than Mount Merrion
+Mount Merrion,Mount Merrion,inference,controlled_phrase,10,reviewed overlap priority over Merrion
+Mount Merrion,Mount-Merrion,inference,controlled_phrase,10,safe dash spacing variant
+Kilmacud,Kilmacud,inference,controlled_phrase,50,locked canonical name
+Stillorgan,Stillorgan,inference,controlled_phrase,50,locked canonical name
+Ardilea,Ardilea,inference,controlled_phrase,50,locked canonical name
+Monkstown,Monkstown,inference,controlled_phrase,50,locked canonical name; configured as inference
+Harolds Cross,Harolds Cross,training_only,controlled_phrase,50,locked canonical name without apostrophe
+Harolds Cross,Harold's Cross,training_only,controlled_phrase,50,safe apostrophe variant
+Harolds Cross,Harold’s Cross,training_only,controlled_phrase,50,safe apostrophe variant
+Kimmage,Kimmage,training_only,controlled_phrase,50,locked canonical name
+Templeogue,Templeogue,training_only,controlled_phrase,50,locked canonical name
+Rathfarnham,Rathfarnham,training_only,controlled_phrase,50,locked canonical name
+Knocklyon,Knocklyon,training_only,controlled_phrase,50,locked canonical name
+Butterfield,Butterfield,training_only,controlled_phrase,50,locked canonical name
+Edmondstown,Edmondstown,training_only,controlled_phrase,50,locked canonical name
+Ballyboden,Ballyboden,training_only,controlled_phrase,50,locked canonical name
+Scholarstown,Scholarstown,training_only,controlled_phrase,50,locked canonical name
+Ballinteer,Ballinteer,training_only,controlled_phrase,50,locked canonical name
+Balally,Balally,training_only,controlled_phrase,50,locked canonical name
+Sandyford,Sandyford,training_only,controlled_phrase,50,locked canonical name
+Kilgobbin,Kilgobbin,training_only,controlled_phrase,50,locked canonical name
+Carrickmines,Carrickmines,training_only,controlled_phrase,50,locked canonical name
+Kilternan,Kilternan,training_only,controlled_phrase,50,locked canonical name
+Deansgrange,Deansgrange,training_only,controlled_phrase,50,locked canonical name
+Cabinteely,Cabinteely,training_only,controlled_phrase,50,locked canonical name
+Loughlinstown,Loughlinstown,training_only,controlled_phrase,50,locked canonical name
+Shankill,Shankill,training_only,controlled_phrase,50,locked canonical name; non-unique locality guarded by Dublin context
+Ballybrack,Ballybrack,training_only,controlled_phrase,50,locked canonical name
+Killiney,Killiney,training_only,controlled_phrase,50,locked canonical name
+Kilbogget,Kilbogget,training_only,controlled_phrase,50,locked canonical name
+Glenageary,Glenageary,training_only,controlled_phrase,50,locked canonical name
+Thomastown,Thomastown,training_only,controlled_phrase,50,locked canonical name
+Dalkey,Dalkey,training_only,controlled_phrase,50,locked canonical name
+Woodpark,Woodpark,training_only,controlled_phrase,50,locked canonical name
+Sandycove,Sandycove,training_only,controlled_phrase,50,locked canonical name
+Dún Laoghaire,Dún Laoghaire,training_only,controlled_phrase,50,locked accented canonical name
+Dún Laoghaire,Dun Laoghaire,training_only,controlled_phrase,50,unaccented source variant
+Dún Laoghaire,Dun-Laoghaire,training_only,controlled_phrase,50,safe dash spacing variant

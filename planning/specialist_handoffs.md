@@ -86,3 +86,12 @@ Use this file to pass unresolved questions between specialist prompts without re
 - Context: The report needs to communicate uncertainty without implying valuation certainty or hiding unsupported cases.
 - Needed by: Phase 3
 - Resolution:
+
+### H-008 - PPR Checkpoint 2 source-standardised output
+- Status: Resolved
+- From: Data Engineering
+- To: Data Specialist / Modelling Specialist
+- Question: What can later checkpoints safely consume from PPR Checkpoint 2?
+- Context: Checkpoint 2 intentionally produces an all-dwelling, source-standardised dataset only. It preserves raw source fields, parses dates/prices/status fields, creates unique source-row IDs and duplicate fingerprints, and applies a provisional 13.5% house VAT adjustment for records marked `VAT Exclusive = Yes`.
+- Needed by: Checkpoint 3
+- Resolution: Use `data/interim/ppr/20260621/ppr_source_standardised.parquet` as the Checkpoint 3 input. Do not treat it as house-only or training-candidate. Geography mapping, house/apartment eligibility, multi-property detection, duplicate resolution, exclusions, and baseline-compatible output remain later steps. Evidence is in `artifacts/data_quality/20260621/ppr_checkpoint_2_report.md`.

@@ -28,7 +28,7 @@ Checkpoint 1 only. No cleaning, filtering, or processed dataset generation has b
 Encoding evidence:
 
 - `utf-8-sig` and `utf-8` fail on byte `0x80` in the price header.
-- CP1252 reads the euro symbol in `Price (EUR symbol)` correctly.
+- CP1252 reads the euro symbol in `Price (€)` correctly.
 
 ## Observed Source Schema
 
@@ -38,7 +38,7 @@ Encoding evidence:
 | `Address` | 0 | 0.0000% | Free-text address. |
 | `County` | 0 | 0.0000% | Nationwide county field, not restricted to Dublin. |
 | `Eircode` | 552,808 | 69.9390% | Too sparse to rely on for V1 geography. |
-| `Price (EUR symbol)` | 0 | 0.0000% | Currency-formatted string in CP1252 source. |
+| `Price (€)` | 0 | 0.0000% | Currency-formatted string in CP1252 source. |
 | `Not Full Market Price` | 0 | 0.0000% | Negative phrasing; raw `No` means not flagged as non-market. |
 | `VAT Exclusive` | 0 | 0.0000% | Requires explicit VAT-adjustment trace fields. |
 | `Description of Property` | 0 | 0.0000% | Broad new/second-hand dwelling house/apartment descriptions only. |
@@ -179,4 +179,3 @@ Highest raw-price examples include:
 | 2020-07-17 | `Apartments 1 - 186 ... Apartments 1-182 ...` | Dublin | 182,378,854.63 | Yes | New dwelling house/apartment |
 
 These examples support high-precision multi-property rules based on address structure and development language, not a price-only exclusion.
-

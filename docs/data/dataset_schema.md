@@ -40,6 +40,77 @@ Suggested table name: `processed_transactions`
 | `exclude_from_training` | boolean | yes | Whether the record is excluded from training. |
 | `exclusion_reason` | string | no | Primary exclusion reason. |
 
+## PPR Checkpoint 2 Source-Standardised Transaction Table
+
+Checkpoint 2 produces a `source-standardised` PPR dataset. It is parsed and typed
+for audit and pipeline testing, but it is not a `training-candidate` dataset and
+must not be described as house-only. Geography, final house eligibility,
+multi-property detection, duplicate resolution, and training exclusions are
+reserved for later checkpoints.
+
+Suggested table name: `ppr_source_standardised_transactions`.
+
+| Field | Type | Nullable | Units | Allowed values / enum | Source or derivation | Role |
+| --- | --- | --- | --- | --- | --- | --- |
+| `record_id` | string | no | n/a | SHA256 hex | Hash of `source_name`, `source_file_sha256`, and `source_row_number`. Exact duplicate raw rows must still have distinct IDs. | audit |
+| `raw_record_fingerprint` | string | no | n/a | SHA256 hex | Hash of deterministic source-column-name/source-value pairs sorted by source column name. Exact duplicate raw logical rows share this value even if source columns arrive in a different order. | audit |
+| `source_name` | string | no | n/a | `ppr` | Constant source identifier. | audit |
+| `source_snapshot_date` | date | no | n/a | ISO date | Configured snapshot date; also the reproducible future-date validation reference. | audit |
+| `source_file_sha256` | string | no | n/a | SHA256 hex | Checksum of the raw source file. | audit |
+| `source_row_number` | integer | no | row number | positive integer | Physical data row number excluding the header. | audit |
+| `transaction_date_raw` | string | no | n/a | raw source text | `Date of Sale (dd/mm/yyyy)`. | raw |
+| `transaction_date` | date | yes | n/a | ISO date or null | Day-first parse of `transaction_date_raw`. Invalid values are flagged, not removed. | derived |
+| `transaction_year` | integer | yes | calendar year | year | Derived from valid `transaction_date`. | derived |
+| `date_parse_status` | string | no | n/a | `parsed`, `missing`, `invalid` | Date parse quality status. | audit |
+| `is_future_transaction` | boolean | yes | n/a | `true`, `false`, null | `transaction_date > source_snapshot_date` when date parses. | audit |
+| `raw_address` | string | no | n/a | raw source text | `Address`. | raw |
+| `county_raw` | string | no | n/a | raw source text | `County`. | raw |
+| `eircode_raw` | string | yes | n/a | raw source text or null | `Eircode`. | raw |
+| `sale_price_eur_raw_text` | string | no | EUR text | raw source text | `Price (€)`, preserved exactly after source decoding. | raw |
+| `sale_price_eur_raw` | decimal(18,2) | yes | EUR | non-null when parse succeeds | Parsed amount recorded by the PPR before any VAT adjustment. Invalid values are flagged, not removed. | derived |
+| `price_parse_status` | string | no | n/a | `parsed`, `missing`, `invalid`, `non_positive` | Price parse and basic target-quality status. | audit |
+| `not_full_market_price_raw` | string | yes | n/a | raw source text or null | `Not Full Market Price`. | raw |
+| `is_full_market_price` | boolean | yes | n/a | `true`, `false`, null | Raw `No` maps to `true`; raw `Yes` maps to `false`; missing/unrecognised maps to null. | derived |
+| `full_market_price_mapping_status` | string | no | n/a | `mapped_full_market`, `mapped_not_full_market`, `missing`, `unrecognised` | Mapping status for the negatively phrased source field. | audit |
+| `vat_exclusive_raw` | string | yes | n/a | raw source text or null | `VAT Exclusive`. | raw |
+| `vat_exclusive_flag` | boolean | yes | n/a | `true`, `false`, null | Raw `Yes` maps to `true`; raw `No` maps to `false`; missing/unrecognised maps to null. | derived |
+| `vat_mapping_status` | string | no | n/a | `mapped_vat_exclusive`, `mapped_vat_inclusive`, `missing`, `unrecognised` | VAT source-value mapping status. | audit |
+| `vat_rate_applied` | decimal(5,3) | yes | rate | `0`, configured house VAT rate, null | The configured Checkpoint 2 default is `0.135`; it applies only for records marked `VAT Exclusive = Yes`; `0` for `No`; null for invalid/unrecognised VAT flags. | derived |
+| `sale_price_eur_adjusted` | decimal(18,2) | yes | EUR | null when raw price or VAT flag is invalid | `sale_price_eur_raw` plus provisional V1 house VAT adjustment when `VAT Exclusive = Yes`; otherwise the raw parsed price. | derived |
+| `sale_price_adjustment_method` | string | no | n/a | `none`, `provisional_house_vat_13_5_percent`, `unresolved_vat_flag`, `invalid_raw_price` | How `sale_price_eur_adjusted` was derived. | audit |
+| `property_description_raw` | string | yes | n/a | raw source text or null | `Description of Property`, preserved exactly after source decoding. | raw |
+| `property_description_normalized` | string | no | n/a | `new_dwelling`, `second_hand_dwelling`, `unknown` | Exact-value lookup for observed English, Irish-language, and known mojibake values. | derived |
+| `property_description_mapping_method` | string | no | n/a | `exact_source_value_mapping`, `unrecognised`, `missing` | Mapping method/status. No fuzzy matching or translation inference is applied. | audit |
+| `is_new_build` | boolean | yes | n/a | `true`, `false`, null | Derived only from exact property-description mapping. | derived |
+| `property_type` | string | no | n/a | `unknown` | PPR does not safely distinguish house versus apartment in Checkpoint 2. | modelling-facing placeholder |
+| `property_type_source` | string | no | n/a | `unknown` | Indicates no reliable source property type is available yet. | audit |
+| `property_type_quality_flag` | string | no | n/a | `ppr_house_apartment_ambiguous` | Explicit reminder that `unknown` is not evidence of a house. | audit |
+| `property_size_description_raw` | string | yes | n/a | raw source text or null | `Property Size Description`. | raw |
+| `property_size_bucket_source` | string | yes | n/a | raw source text or null | Same as source size bucket, retained for audit. | raw |
+| `floor_area_sqm` | float | yes | square metres | always null in Checkpoint 2 | PPR size buckets must not populate exact floor area. | modelling-facing placeholder |
+
+All original PPR source columns are also preserved in the output under
+`source_raw__...` columns with deterministic column-name normalisation. The
+Checkpoint 2 report records the mapping from original source column names to
+preserved output names. If two source columns would normalise to the same
+preserved output name, Checkpoint 2 fails explicitly before writing output.
+
+### Provisional VAT Adjustment
+
+For V1 house scope, the configured provisional house VAT rate is `0.135`. When
+`VAT Exclusive = Yes`, Checkpoint 2 calculates:
+
+```text
+sale_price_eur_adjusted = sale_price_eur_raw * 1.135
+```
+
+The calculation uses decimal arithmetic and rounds to cents using
+`ROUND_HALF_UP`. This adjusted value is provisional before property-scope
+eligibility is resolved. It does not prove that the record is a house, one
+dwelling, in geography, or suitable for model training. A later
+`training-candidate` dataset may use the adjusted price only for records that
+pass the approved house-only and transaction-scope rules.
+
 ## Canonical area lookup
 
 Suggested table name: `canonical_areas`
@@ -98,4 +169,3 @@ Do not use:
 - asking price as a target proxy
 - post-sale information unavailable at inference time
 - manually created labels that encode the target
-

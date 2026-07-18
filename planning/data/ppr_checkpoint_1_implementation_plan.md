@@ -35,7 +35,7 @@ Observed PPR source columns:
 2. `Address`
 3. `County`
 4. `Eircode`
-5. `Price (EUR symbol)`
+5. `Price (€)`
 6. `Not Full Market Price`
 7. `VAT Exclusive`
 8. `Description of Property`
@@ -49,7 +49,7 @@ Recommended raw-to-processed mapping:
 | `Address` | `raw_address` | `address_normalized`, `canonical_area`, `geo_scope` | Preserve raw value. |
 | `County` | `county_raw` | `county` | Use in geography QA; do not treat as sufficient geography. |
 | `Eircode` | `eircode_raw` | optional metadata | 69.9390% blank; not required for V1. |
-| `Price (EUR symbol)` | `sale_price_eur_raw_text`, `sale_price_eur_raw` | `sale_price_eur` | Final value may be VAT-adjusted. |
+| `Price (€)` | `sale_price_eur_raw_text`, `sale_price_eur_raw` | `sale_price_eur` | Final value may be VAT-adjusted. |
 | `Not Full Market Price` | `not_full_market_price_raw` | `is_full_market_price` | Raw `No` maps to true; raw `Yes` maps to false. |
 | `VAT Exclusive` | `vat_exclusive_raw` | `vat_exclusive_flag`, `vat_rate_applied`, `sale_price_adjustment_method` | Apply configured VAT rate only when resolvable. |
 | `Description of Property` | `property_description_raw` | `is_new_build`, `property_type_coarse`, `property_type` | Does not reliably separate house vs apartment. |
@@ -268,4 +268,3 @@ These are proposed rules only. They should be reviewed before implementation.
 2. Confirm whether the first processed PPR baseline may use `property_type = unknown` for plausible house records because PPR cannot safely provide detailed house type.
 3. Confirm the initial VAT-rate configuration source and effective date table before applying VAT adjustments.
 4. Confirm whether source docs should be updated before or during Checkpoint 2 to add raw/adjusted price and PPR status fields.
-
