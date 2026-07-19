@@ -282,6 +282,21 @@ This file records key project decisions, assumptions, and locked defaults.
 - Rationale: Confidence labels are only useful if they correspond to real differences in uncertainty and support.
 - Notes: Initial comparable-support thresholds are documented in `docs/modelling/interval_confidence_method.md`.
 
+### D-034 - PPR Checkpoint 4 conservative cleaning policy
+
+- Status: Accepted
+- Decision: Auto-exclude only high-precision multi-property evidence; keep
+  medium evidence review-only. For exact raw-fingerprint duplicate groups,
+  retain the lowest source row and exclude later occurrences while preserving
+  all rows in the cleaning-assessed dataset. Explicit apartment/flat/APT-with-ID
+  records are outside house scope; ambiguous UNIT and otherwise unresolved PPR
+  property scope remain eligible with flags under H-005. Preserve every
+  applicable exclusion reason and select the primary reason using the documented
+  deterministic priority.
+- Rationale: This balances single-house purity with recall while keeping every
+  consequential decision inspectable and reversible before Checkpoint 5.
+- Approved by: User during Checkpoint 4 evidence review on 2026-07-18.
+
 ---
 
 ## Open questions

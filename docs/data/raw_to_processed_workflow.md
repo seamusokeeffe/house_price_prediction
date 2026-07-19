@@ -62,6 +62,10 @@ Keep only plausible house records for training.
 
 Where property type is unknown, keep the record only if the downstream modelling plan explicitly allows unknown type with a quality flag. Otherwise exclude from training but retain for audit.
 
+For PPR Checkpoint 4, resolved handoff H-005 allows unresolved house/apartment
+scope to remain eligible with `property_type = unknown`. Explicit apartment or
+flat evidence is excluded; ambiguous `UNIT` evidence is review-only.
+
 ### 5. Apply cleaning and exclusion rules
 
 Use the rules in `docs/data/data_cleaning_rules.md`.
@@ -71,6 +75,20 @@ Each exclusion must set:
 - `exclude_from_training = true`
 - `exclusion_reason`
 - a quality flag
+
+Checkpoint 4 writes a row-preserving `cleaning-assessed` interim Parquet. It
+adds multi-property, property-scope, duplicate-like, quality, and exclusion
+assessments without publishing a filtered training view. Checkpoint 5 alone may
+materialise final processed/training outputs, DuckDB views, or baseline CSVs.
+
+Checkpoint status progression is:
+
+```text
+source-standardised
+  -> geography-enriched
+  -> cleaning-assessed
+  -> final processed/training views (Checkpoint 5)
+```
 
 ### 6. Derive features and support fields
 
@@ -113,4 +131,3 @@ Each modelling experiment should record:
 - schema version
 - cleaning rules version
 - feature pipeline version
-

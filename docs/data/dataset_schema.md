@@ -123,6 +123,40 @@ Suggested table name: `canonical_areas`
 | `parent_area` | string | no | Optional broader grouping for reporting. |
 | `notes` | string | no | Ambiguity or mapping notes. |
 
+## PPR Checkpoint 4 Cleaning-Assessed Transaction Table
+
+Checkpoint 4 appends assessment fields to every Checkpoint 3 row. The output is
+`cleaning-assessed`: it is not a final processed, house-only, model-ready, or
+baseline-compatible view. Every Checkpoint 3 field and value remains unchanged.
+
+| Field | PyArrow type | Nullable | Allowed values / meaning |
+| --- | --- | --- | --- |
+| `is_possible_multi_property_sale` | boolean | no | Whether any transparent multi-property rule matched. |
+| `multi_property_rule_ids` | string | no | Stable pipe-delimited rule IDs. |
+| `multi_property_reason` | string | no | Pipe-delimited rule descriptions. |
+| `multi_property_max_severity` | string | no | `none`, `medium`, or `high`. |
+| `multi_property_action` | string | no | `none`, `review_only`, or `auto_exclude`. |
+| `single_dwelling_confidence` | string | no | Deterministic evidence tier: `high`, `medium`, or `low`; not a probability. |
+| `property_scope_status` | string | no | `clearly_non_house`, `review_required`, or `unresolved_house_or_apartment`. |
+| `property_scope_rule_ids` | string | no | Stable pipe-delimited property-scope rules. |
+| `property_scope_reason` | string | no | Human-readable property-scope evidence. |
+| `duplicate_group_id` | string | yes | SHA256 of the category namespace and canonical group key. |
+| `duplicate_group_size` | int64 | no | Rows participating in the assigned group; one otherwise. |
+| `duplicate_status` | string | no | `exact_source_duplicate`, `plausible_duplicate_publication`, `unresolved_duplicate_like`, `same_day_distinct_transaction`, or `not_duplicate_like`. |
+| `duplicate_rule_ids` | string | no | Stable duplicate assessment rule IDs. |
+| `duplicate_action` | string | no | `none`, `review_only`, `retain_representative`, or `auto_exclude`. |
+| `duplicate_representative_record_id` | string | yes | Deterministically retained record for an exact group. |
+| `quality_flags` | string | no | Stable, deduplicated, pipe-delimited combined flags. |
+| `exclude_from_training` | boolean | no | Checkpoint 4 eligibility assessment; rows are not physically removed. |
+| `exclusion_reason` | string | yes | Highest-priority applicable reason. |
+| `exclusion_reasons` | string | no | Every applicable reason in deterministic priority order. |
+| `exclusion_rule_ids` | string | no | Every applicable cleaning rule ID. |
+| `cleaning_assessment_status` | string | no | `eligible`, `eligible_with_review`, or `excluded`. |
+
+The explicit schema is constructed from the complete approved Checkpoint 3
+PyArrow schema followed by these fields. Build validation compares every
+inherited Arrow value and row position after Parquet read-back.
+
 ## Inference input table
 
 Suggested table name: `inference_inputs`

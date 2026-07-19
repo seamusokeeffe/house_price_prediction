@@ -29,9 +29,9 @@ Primary goal: decision-useful valuation support for personal house search.
   - Terraced House
   - End of Terrace House
 - Inference geography:
-  - Sandymount, Ballsbridge, Ranelagh, Rathmines, Rathgar, Terenure, Donnybrook, Milltown, Dartry, Clonskeagh, Windy Arbour, Churchtown, Dundrum, Goatstown, Foxrock, Seapoint, Blackrock, Booterstown, Merrion, Mount Merrion, Kilmacud, Stillorgan, Ardilea
+  - Sandymount, Ballsbridge, Ranelagh, Rathmines, Rathgar, Terenure, Donnybrook, Milltown, Dartry, Clonskeagh, Windy Arbour, Churchtown, Dundrum, Goatstown, Foxrock, Seapoint, Blackrock, Booterstown, Merrion, Mount Merrion, Kilmacud, Stillorgan, Ardilea, Monkstown
 - Training geography:
-  - inference geography plus Harolds Cross, Kimmage, Templeogue, Rathfarnham, Knocklyon, Butterfield, Edmondstown, Ballyboden, Scholarstown, Ballinteer, Balally, Sandyford, Kilgobbin, Carrickmines, Kilternan, Deansgrange, Cabinteely, Loughlinstown, Shankill, Ballybrack, Killiney, Kilbogget, Glenageary, Thomastown, Dalkey, Woodpark, Monkstown, Sandycove, Dún Laoghaire
+  - inference geography plus Harolds Cross, Kimmage, Templeogue, Rathfarnham, Knocklyon, Butterfield, Edmondstown, Ballyboden, Scholarstown, Ballinteer, Balally, Sandyford, Kilgobbin, Carrickmines, Kilternan, Deansgrange, Cabinteely, Loughlinstown, Shankill, Ballybrack, Killiney, Kilbogget, Glenageary, Thomastown, Dalkey, Woodpark, Sandycove, Dún Laoghaire
 - Do not broaden geography further for now.
 - One model across house types first, with property type as a feature.
 - Split later only if justified by error analysis.

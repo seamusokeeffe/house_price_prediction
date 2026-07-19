@@ -95,3 +95,12 @@ Use this file to pass unresolved questions between specialist prompts without re
 - Context: Checkpoint 2 intentionally produces an all-dwelling, source-standardised dataset only. It preserves raw source fields, parses dates/prices/status fields, creates unique source-row IDs and duplicate fingerprints, and applies a provisional 13.5% house VAT adjustment for records marked `VAT Exclusive = Yes`.
 - Needed by: Checkpoint 3
 - Resolution: Use `data/interim/ppr/20260621/ppr_source_standardised.parquet` as the Checkpoint 3 input. Do not treat it as house-only or training-candidate. Geography mapping, house/apartment eligibility, multi-property detection, duplicate resolution, exclusions, and baseline-compatible output remain later steps. Evidence is in `artifacts/data_quality/20260621/ppr_checkpoint_2_report.md`.
+
+### H-009 - PPR Checkpoint 4 cleaning-assessed output
+- Status: Resolved
+- From: Data Engineering
+- To: Data Specialist / Modelling Specialist
+- Question: What may Checkpoint 5 materialise from the cleaning-assessed PPR dataset?
+- Context: Checkpoint 4 preserves all Checkpoint 3 rows and appends transparent transaction-scope, property-scope, duplicate, quality, and exclusion assessments.
+- Needed by: Checkpoint 5
+- Resolution: Use `data/interim/ppr/20260621/ppr_cleaning_assessed.parquet` as the only Checkpoint 5 transformation input. Apply `exclude_from_training` when publishing the final training view, preserve audit access to excluded rows, keep unknown property type under H-005, and run baseline/temporal smoke tests only in Checkpoint 5. Do not reinterpret review-only flags as exclusions without a new evidence decision.

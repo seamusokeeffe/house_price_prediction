@@ -62,7 +62,15 @@ Flag potential duplicates using:
 - same sale price
 - same source status fields
 
-Do not drop duplicates automatically until the pattern is inspected.
+Checkpoint 4 policy:
+
+- exact raw-fingerprint groups retain the lowest `source_row_number` (then
+  `record_id`) and mark later occurrences for exclusion;
+- normalised publication-key matches remain review-only;
+- weaker conflicting-status matches remain review-only;
+- same-date/equal-price clusters with distinct addresses are explicitly not
+  treated as duplicates solely for that evidence;
+- all rows remain in the cleaning-assessed Parquet.
 
 ### Non-standard transactions
 
@@ -73,6 +81,22 @@ Exclude or flag where detectable:
 - non-market transfers
 - obvious data entry errors
 - VAT-exclusive/new-build records if modelling decides they are incompatible with resale houses
+
+Checkpoint 4 uses configured high-precision multi-property rules for automatic
+exclusion. Generic numeric ranges, singular unit ranges, and development/phase
+terminology are review-only. Price, semicolons, commas, VAT-exclusive status,
+and new-build status never establish a multi-property transaction by themselves.
+
+### PPR property scope
+
+- Explicit token-bounded `APARTMENT`, `APARTMENTS`, `FLAT`, `FLATS`, or `APT`
+  with an identifier is `clearly_non_house` and excluded from house training.
+- Otherwise isolated `UNIT` wording is `review_required` and remains eligible.
+- Absence of those tokens is `unresolved_house_or_apartment`, never confirmed
+  house evidence.
+- Per resolved handoff H-005, unresolved records retain `property_type = unknown`
+  and remain eligible with quality flags for the first broad baseline.
+- Detailed house type is not inferred from address text.
 
 ### Floor area, beds, and baths
 
@@ -115,3 +139,22 @@ Required exclusion reasons:
 - `duplicate_unresolved`
 - `insufficient_required_fields`
 
+Checkpoint 4 uses this deterministic primary-reason priority while retaining
+all applicable reasons separately:
+
+1. `invalid_target`
+2. `invalid_date`
+3. `non_full_market_transaction`
+4. `unresolved_market_price_status`
+5. `out_of_scope_geography`
+6. `unmatched_geography_unresolved`
+7. `ambiguous_geography_unresolved`
+8. `excluded_property_type`
+9. `multi_property_transaction`
+10. `duplicate_unresolved`
+11. `unresolved_vat_treatment`
+12. `insufficient_required_fields`
+
+VAT-exclusive status alone is not an exclusion. A valid adjusted target remains
+eligible unless another rule applies. New-build status and high/low price alone
+are also not exclusions. No hard floor-area-above-200-square-metre rule exists.
